@@ -12,8 +12,8 @@ __仅更改一些代码使其在windows上运行
  1.clone文件到本地  
  2.从我的世界(minecraft.net)正版启动器中下载服务端jar文件(server.jar)  
  3.使用已有的开服脚本(start.bat)或自行创建新的开服脚本  
- 4.创建plugins文件夹(__重要 不创建无法开服__)
- 5.从源地址下载所需要的依赖  
+ 4.向plugins文件夹中添加插件(推荐去[TIS Trinity Union](https://github.com/TISUnion)看看)  
+ 5.从[源地址](https://github.com/kafuuchino-desu/MCDaemon)下载所需要的依赖  
  6.从当前文件目录下运行命令提示符 >>python server.py 启动服务端  
    
  ## 关于  
