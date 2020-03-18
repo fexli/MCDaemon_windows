@@ -20,7 +20,7 @@ def notice():
     print('please notice that this software is still in alpha version,it may not work well')
     print('this software is maintained by chino_desu,welcome for your issues and PRs')
     print('Rebuild in Windows Version by fe_x_li')
-    print('sysDefaultEncoding is %s'%sys.getdefaultencoding())
+    print('sysDefaultEncoding is %s' % sys.getdefaultencoding())
 
 
 def listplugins(plugins):
@@ -60,19 +60,16 @@ def getInput(server):
 class Server(object):
     default_sleep = 0.1
     recv_wait = 1
+
     def __init__(self):
         self.tempbuffer = ''
         self.fstdout = open('./stdout.out', 'w')
         self.fstdout_toread = open('./stdout.out', 'rb')
         self.start()
+
     def start(self):
-        if sys.argv[-1] != 'fabric':
-            self.process = Popen('start.bat', stdin=PIPE, stdout=self.fstdout, stderr=PIPE,universal_newlines=True,
-                                 encoding='UTF-8')
-        else:
-            print('[MCDeamon]start server by Fabric')
-            self.process = Popen('start-fabric.bat', stdin=PIPE, stdout=self.fstdout, stderr=PIPE, universal_newlines=True,
-                                 encoding='UTF-8')
+        self.process = Popen('start.bat', stdin=PIPE, stdout=self.fstdout, stderr=PIPE, universal_newlines=True,
+                             encoding='UTF-8')
         # flags = fcntl.fcntl(self.process.stdout, fcntl.F_GETFL)
         # fcntl.fcntl(self.process.stdout, fcntl.F_SETFL, flags | os.O_NONBLOCK)
         log('Server Running at PID:' + str(self.process.pid))
@@ -81,7 +78,6 @@ class Server(object):
         try:
             global stop_flag
             receive = self.recv()
-            # print('recv done')
             if receive != '':
                 print(receive)
                 for line in receive.splitlines():
@@ -129,7 +125,7 @@ class Server(object):
                         t = threading.Thread(target=self.callplugin, args=(result, singleplugin))
                         t.setDaemon(True)
                         t.start()
-                # time.sleep(0.01)
+                # time.sleep(0.01) # i don't know what this is for
         except (KeyboardInterrupt, SystemExit):
             self.stop()
             sys.exit(0)
@@ -138,46 +134,33 @@ class Server(object):
         try:
             self.process.stdin.write(data)
             self.process.stdin.flush()
-        except Exception as e:
-            errlog(str(e))
-            errlog('UTF-8 Encoding data is %s'%data.encode('UTF-8'))
-        # try:
-        #     # self.process.stdin.write(data.encode('UTF-8').decode('gbk'))
-        #     self.process.stdin.write(data.encode('UTF-8').decode('gbk'))
-        #     self.process.stdin.flush()
-        # except UnicodeDecodeError:
-        #     self.process.stdin.write(data)
-        #     self.process.stdin.flush()
-        #     errlog('The Program Does not support Chinese!')
-        # except Exception as e:
-        #     errlog(str(e))
+        except:
+            errlog('UTF-8 Encoding data is %s' % data.encode('UTF-8'))
+
     def execute(self, data, tail='\n'):  # puts a command in STDIN with \n to execute
         self.send(data + tail)
 
-    def recv(self, t=0.1):  # returns latest STDOUT
-        r = ''
+    def recv(self):  # returns latest STDOUT
         try:
-            # r = self.process.stdout.readline()
             if self.recv_wait:
                 time.sleep(self.default_sleep)
                 # pass
             r = self.fstdout_toread.readline().decode('GB2312')
             if not r:
                 self.recv_wait = 1
-            # print('[debug]recv len=%s -1==/r:%s -1==/n:%s'%(len(r),r[-1]=='\r',r[-1]=='\n'))
-            if r[-1] != '\n': # 结尾非换行符(\n)
-                self.tempbuffer += r # 将内容存储到buffer中
+            if r[-1] != '\n':
+                self.tempbuffer += r
                 self.recv_wait = 0
-                return '' # 不返回任何值
-            else: # 结尾是换行符,一行输出内容结束
-                self.tempbuffer += r # 将内容存储到buffer中
-                ret = self.tempbuffer # 将buffer中内容提取出来
-                self.tempbuffer = '' # 清空buffer 等待下次调用
+                return ''
+            else:
+                self.tempbuffer += r
+                ret = self.tempbuffer
+                self.tempbuffer = ''
                 self.recv_wait = 0
-                return ret.rstrip() # 返回完整行
+                return ret.rstrip()
         except:
-            # print(str(e))
             return ''
+
     # def recv(self, t=0.1):  # returns latest STDOUT
     #     r = ''
     #     pr = self.process.stdout
@@ -187,7 +170,6 @@ class Server(object):
     #             continue
     #         r = pr.read()
     #         return r.rstrip()
-
 
     def cmdstop(self):  # stop the server using command
         self.send('stop\n')
@@ -203,8 +185,8 @@ class Server(object):
         stop_flag = 2
         self.cmdstop()
         # try:
-            # self.forcestop()
-            # log('forced server to stop because it has closed[stopflag=%s]'%stop_flag)
+        # self.forcestop()
+        # log('forced server to stop because it has closed[stopflag=%s]'%stop_flag)
         # except:
         #     pass
 
@@ -213,9 +195,7 @@ class Server(object):
 
     def tell(self, player, data):
         self.execute('tellraw ' + player + ' {"text":"' + str(data) + '"}')
-    # def tell_command(self,player,text,command,hoverEvent):
-    #     # "open_url" "run_command"
-    #     self.execute('tellraw' + player + '{"text":"'+str(text) + '"},"clickEvent":{"action":}')
+
     def callplugin(self, result, plugin):
         try:
             plugin.onServerInfo(self, result)
