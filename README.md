@@ -19,4 +19,4 @@ __仅更改一些代码使其在windows上运行
  ## 关于  
  如有程序技术性bug请及时反馈  
  以后应该不会再有功能性更新(~~因为我也在等V2.0 [催更催更](https://github.com/kafuuchino-desu/MCDaemon)~~)  
- 测试个人服务器在windows10和python3.6.5环境下运行1.15.2原版服务器连续约20天无异常  
+ 测试个人服务器在windows10和python3.6.5环境下运行20w10a(snapshot 1.16)原版服务器连续约一周无异常  
