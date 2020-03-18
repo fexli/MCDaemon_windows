@@ -9,7 +9,7 @@ import threading
 import mcdplugin
 from mcdlog import *
 import serverinfoparser
-import chardet
+# import chardet # chardet库无用，当时仅用于侦测代码格式
 
 stop_flag = 0
 
