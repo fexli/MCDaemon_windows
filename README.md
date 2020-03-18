@@ -9,7 +9,6 @@ __仅更改一些代码使其在windows上运行
 
 
 ## 开始使用  
-------  
  1.clone文件到本地  
  2.从我的世界(minecraft.net)正版启动器中下载服务端jar文件(server.jar)  
  3.使用已有的开服脚本(start.bat)或自行创建新的开服脚本  
@@ -21,4 +20,5 @@ __仅更改一些代码使其在windows上运行
  如有程序技术性bug请及时反馈  
  以后应该不会再有功能性更新(~~因为我也在等V2.0 [催更催更](https://github.com/kafuuchino-desu/MCDaemon)~~)  
  测试个人服务器在windows10和python3.6.5环境下运行20w10a(snapshot 1.16)原版服务器连续约一周无异常  
+  
  __更多内容请移步源地址Readme_cn.md 阅读__  
